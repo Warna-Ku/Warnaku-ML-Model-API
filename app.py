@@ -140,6 +140,8 @@ def predict():
             dominant_colors[segment] = find_dominant_color(area)
 
     user_palette = determine_palette(dominant_colors)
+    
+    #the results
     response = {
         'user_palette': user_palette,
         'created': datetime.now().strftime('%m/%d/%Y, %H:%M:%S')
