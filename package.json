@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node ./src/server/server.js"
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
@@ -19,12 +19,18 @@
   },
   "homepage": "https://github.com/Warna-Ku/Warnaku-ML-Model-API#readme",
   "dependencies": {
-    "@tensorflow/tfjs-node": "^3.1.0",
+    "@google-cloud/storage": "^7.11.2",
+    "@tensorflow/tfjs": "^4.20.0",
+    "@tensorflow/tfjs-converter": "^4.20.0",
+    "@tensorflow/tfjs-node": "^4.20.0",
+    "axios": "^1.7.2",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "form-data": "^4.0.0",
     "moment-timezone": "^0.5.45",
     "multer": "^1.4.5-lts.1",
+    "node-fetch": "^3.3.2",
     "nodemon": "^2.0.22",
     "sharp": "^0.32.6"
   }
