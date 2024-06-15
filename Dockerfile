@@ -1,23 +1,16 @@
-# Use the official Python 3.10 slim image as the base image
-FROM python:3.10-slim
+# Use the official TensorFlow image as the base image
+FROM tensorflow/tensorflow:2.16.1
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
-    build-essential \
     libjpeg-dev \
     zlib1g-dev \
     libpng-dev \
-    python3-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Upgrade pip and install Python dependencies
-RUN python -m pip install --upgrade pip setuptools wheel
-
-# Copy the requirements file
-COPY requirements.txt .
-
-# Install Python dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+# Upgrade pip and install additional Python dependencies
+RUN pip install --upgrade pip
+RUN pip install Flask==2.0.2 Werkzeug==2.0.2 Pillow==8.4.0 scikit-image==0.19.0 scikit-learn==0.24.2
 
 # Create the application directory
 RUN mkdir -p /opt/app
