@@ -3,7 +3,8 @@ from flask import Flask, request, jsonify
 import tensorflow as tf
 import numpy as np
 from PIL import Image
-import io
+import requests
+from io import BytesIO
 from sklearn.cluster import KMeans
 from skimage.color import rgb2lab, deltaE_cie76
 from datetime import datetime
@@ -11,9 +12,21 @@ from collections import OrderedDict
 
 app = Flask(__name__)
 
+# Public URL of your Keras model file
+model_url = 'https://storage.googleapis.com/warnaku-cs/UNet-ResNet34.keras'
+
+# Function to download and load the model from the public URL
+def load_model_from_url(model_url):
+    response = requests.get(model_url)
+    if response.status_code == 200:
+        model_bytes = BytesIO(response.content)
+        model = tf.keras.models.load_model(model_bytes)
+        return model
+    else:
+        raise Exception(f"Failed to download model from {model_url}")
+
 # Load the model
-model_path = "./models/UNet-ResNet34.keras"
-model = tf.keras.models.load_model(model_path)
+model = load_model_from_url(model_url)
 
 segmentation_labels = OrderedDict({
     'background': [0, 0, 0],
