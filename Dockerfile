@@ -1,5 +1,5 @@
-# Use the official TensorFlow image as the base image
-FROM tensorflow/tensorflow:2.16.1
+# Use Python 3.9 base image instead
+FROM python:3.9
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
