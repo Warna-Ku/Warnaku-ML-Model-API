@@ -1,8 +1,9 @@
 Flask==2.0.2
 Werkzeug==2.0.2
 tensorflow==2.16.1
-numpy==1.26.4
+numpy==1.23.5
 Pillow==8.4.0
 scikit-image==0.19.0
 scikit-learn==0.24.2
 Cython==0.29.28
+setuptools==59.5.0
