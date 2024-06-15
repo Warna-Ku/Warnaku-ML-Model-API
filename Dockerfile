@@ -10,20 +10,20 @@ RUN apt-get update && apt-get install -y \
     python3-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Upgrade pip and install cython
-RUN python -m pip install --upgrade pip setuptools wheel cython
+# Upgrade pip and install Python dependencies
+RUN python -m pip install --upgrade pip setuptools wheel
+
+# Copy the requirements file
+COPY requirements.txt .
+
+# Install Python dependencies
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Create the application directory
 RUN mkdir -p /opt/app
 
 # Set the working directory
 WORKDIR /opt/app
-
-# Copy the requirements file
-COPY requirements.txt requirements.txt
-
-# Install Python dependencies
-RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the application code
 COPY . .
