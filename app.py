@@ -3,36 +3,34 @@ from flask import Flask, request, jsonify
 import tensorflow as tf
 import numpy as np
 from PIL import Image
-import requests
-from io import BytesIO
 from sklearn.cluster import KMeans
 from skimage.color import rgb2lab, deltaE_cie76
 from datetime import datetime
 from collections import OrderedDict
+import requests
 
 app = Flask(__name__)
 
-# Public URL of your Keras model file
-model_url = 'https://storage.googleapis.com/warnaku-cs/UNet-ResNet34.keras'
+# Define your Google Cloud Storage model URL
+MODEL_URL = "https://storage.googleapis.com/warnaku-cs/UNet-ResNet34.keras"
 
-# Global variable to store the model
-model = None
-
-# Function to download and load the model from the public URL
+# Function to load model from Google Cloud Storage
 def load_model_from_url(model_url):
-    global model
-    if model is None:
-        response = requests.get(model_url)
-        if response.status_code == 200:
-            model_bytes = BytesIO(response.content)
-            model = tf.keras.models.load_model(model_bytes)
-        else:
-            raise Exception(f"Failed to download model from {model_url}")
+    # Download the model file from the URL
+    with requests.get(model_url, stream=True) as r:
+        r.raise_for_status()
+        model_bytes = r.content
+    
+    # Load the model
+    model = tf.keras.models.load_model(io.BytesIO(model_bytes))
+    
     return model
 
 # Load the model
-load_model_from_url(model_url)
+model = load_model_from_url(MODEL_URL)
+print('Model loaded successfully.')
 
+# Define segmentation labels
 segmentation_labels = OrderedDict({
     'background': [0, 0, 0],
     'lips': [255, 0, 0],
@@ -47,15 +45,18 @@ segmentation_labels = OrderedDict({
     'sunglasses': [0, 128, 128],
 })
 
+# List of labels and RGB values
 labels = list(segmentation_labels.keys())
 rgb_values = list(segmentation_labels.values())
 
+# Function to preprocess image
 def preprocess_image(image):
     image = image.resize((256, 256))
     image = np.array(image) / 255.0
     image = np.expand_dims(image, axis=0)
     return image
 
+# Function to extract dominant colors using KMeans clustering
 def extract_dominant_colors(image, k=3):
     pixels = image.reshape(-1, 3)
     kmeans = KMeans(n_clusters=k)
@@ -63,9 +64,11 @@ def extract_dominant_colors(image, k=3):
     colors = kmeans.cluster_centers_
     return colors
 
+# Function to calculate root mean square error (RMSE)
 def calculate_rmse(image1, image2):
     return np.sqrt(np.mean((image1 - image2) ** 2))
 
+# Function to find dominant color in segmented area
 def find_dominant_color(segmented_area):
     dominant_colors = extract_dominant_colors(segmented_area)
     best_color = None
@@ -80,14 +83,17 @@ def find_dominant_color(segmented_area):
 
     return best_color
 
+# Function to convert RGB to LAB color space
 def rgb_to_lab(color):
     color = np.array(color, dtype=np.uint8).reshape(1, 1, 3)
     color_lab = rgb2lab(color)
     return color_lab[0, 0]
 
+# Function to calculate color distance in LAB color space
 def color_distance(color1, color2):
     return deltaE_cie76(rgb_to_lab(color1), rgb_to_lab(color2))
 
+# Function to determine color palette based on dominant colors
 def determine_palette(dominant_colors):
     peach = [255, 229, 180]
     purple = [128, 0, 128]
@@ -126,6 +132,7 @@ def determine_palette(dominant_colors):
 
     return best_palette
 
+# Flask route to predict user palette
 @app.route('/predict', methods=['POST'])
 def predict():
     if 'image' not in request.files:
@@ -159,7 +166,6 @@ def predict():
 
     user_palette = determine_palette(dominant_colors)
     
-    #the results
     response = {
         'user_palette': user_palette,
         'created': datetime.now().strftime('%m/%d/%Y, %H:%M:%S')
@@ -168,4 +174,4 @@ def predict():
     return jsonify(response)
 
 if __name__ == '__main__':
-    app.run(port=8080, debug=True)
+    app.run(host='0.0.0.0', port=8080)
