@@ -1,5 +1,5 @@
-# Use Python 3.9 base image instead
-FROM python:3.9
+# Use Python 3.9 base image
+FROM python:3.10
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
@@ -8,17 +8,22 @@ RUN apt-get update && apt-get install -y \
     libpng-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Upgrade pip and install additional Python dependencies
+# Upgrade pip
 RUN pip install --upgrade pip
+
+# Install TensorFlow first to avoid any potential conflicts
+RUN pip install tensorflow==2.15.1
+
+# Install other Python dependencies
 RUN pip install Flask==2.0.2 Werkzeug==2.0.2 Pillow==8.4.0 scikit-image==0.19.0 scikit-learn==0.24.2
 
-# Create the application directory
+# Create application directory
 RUN mkdir -p /opt/app
 
-# Set the working directory
+# Set working directory
 WORKDIR /opt/app
 
-# Copy the application code
+# Copy application code
 COPY . .
 
 # Expose the port the app runs on
