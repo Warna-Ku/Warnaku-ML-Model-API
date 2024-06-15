@@ -15,18 +15,23 @@ app = Flask(__name__)
 # Public URL of your Keras model file
 model_url = 'https://storage.googleapis.com/warnaku-cs/UNet-ResNet34.keras'
 
+# Global variable to store the model
+model = None
+
 # Function to download and load the model from the public URL
 def load_model_from_url(model_url):
-    response = requests.get(model_url)
-    if response.status_code == 200:
-        model_bytes = BytesIO(response.content)
-        model = tf.keras.models.load_model(model_bytes)
-        return model
-    else:
-        raise Exception(f"Failed to download model from {model_url}")
+    global model
+    if model is None:
+        response = requests.get(model_url)
+        if response.status_code == 200:
+            model_bytes = BytesIO(response.content)
+            model = tf.keras.models.load_model(model_bytes)
+        else:
+            raise Exception(f"Failed to download model from {model_url}")
+    return model
 
 # Load the model
-model = load_model_from_url(model_url)
+load_model_from_url(model_url)
 
 segmentation_labels = OrderedDict({
     'background': [0, 0, 0],
