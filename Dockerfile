@@ -23,7 +23,8 @@ RUN mkdir -p /opt/app
 # Set working directory
 WORKDIR /opt/app
 
-# Copy application code
+# Copy the application code including the model
+COPY ./models/UNet-ResNet34.keras /opt/app/models/UNet-ResNet34.keras
 COPY . .
 
 # Expose the port the app runs on
