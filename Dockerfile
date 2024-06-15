@@ -1,4 +1,5 @@
-FROM python:3.11-slim
+# Use the official Python 3.10 slim image as the base image
+FROM python:3.10-slim
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
@@ -9,12 +10,13 @@ RUN apt-get update && apt-get install -y \
     python3-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Install cython using pip
+# Upgrade pip and install cython
 RUN python -m pip install --upgrade pip setuptools wheel cython
 
 # Create the application directory
 RUN mkdir -p /opt/app
 
+# Set the working directory
 WORKDIR /opt/app
 
 # Copy the requirements file
@@ -29,4 +31,5 @@ COPY . .
 # Expose the port the app runs on
 EXPOSE 8080
 
+# Command to run the application
 CMD ["python", "app.py"]
