@@ -22,8 +22,8 @@ def load_model_from_url(model_url):
             r.raise_for_status()
             model_bytes = r.content
         
-        # Save model bytes to a temporary file
-        temp_file_path = "/tmp/model.keras"  # Choose a temporary file path with .keras extension
+        # Save model bytes to a temporary file with .keras extension
+        temp_file_path = "/tmp/model.keras"
         with open(temp_file_path, "wb") as f:
             f.write(model_bytes)
         
