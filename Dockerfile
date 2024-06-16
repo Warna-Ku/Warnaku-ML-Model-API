@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install -y \
 RUN pip install --upgrade pip
 
 # Install TensorFlow and other Python dependencies
-RUN pip install tensorflow==2.15.1 Flask==2.0.2 Werkzeug==2.0.2 Pillow==8.4.0 scikit-image==0.19.0 scikit-learn==0.24.2 requests
+RUN pip install tensorflow==2.15.1 Flask==2.0.2 Pillow==8.4.0 scikit-image==0.19.0 scikit-learn==0.24.2 requests joblib==1.1.0
 
 # Create application directory
 RUN mkdir -p /opt/app

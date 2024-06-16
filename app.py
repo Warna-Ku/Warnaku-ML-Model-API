@@ -9,7 +9,7 @@ from skimage.color import rgb2lab, deltaE_cie76
 from datetime import datetime
 from collections import OrderedDict
 from flask import Flask, request, jsonify
-import tempfile
+import joblib
 
 app = Flask(__name__)
 
@@ -23,24 +23,11 @@ def load_model_from_url(model_url):
         r.raise_for_status()
         model_bytes = r.content
     
-    # Save model bytes to a temporary file with .keras extension
-    temp_file_keras = tempfile.NamedTemporaryFile(delete=False, suffix='.keras')
-    temp_file_keras.write(model_bytes)
-    temp_file_keras.close()
+    # Save model bytes to a temporary file
+    temp_file = io.BytesIO(model_bytes)
     
-    # Load the .keras model
-    model = tf.keras.models.load_model(temp_file_keras.name)
-    
-    # Convert the model to .h5 format and save to a temporary file
-    temp_file_h5 = tempfile.NamedTemporaryFile(delete=False, suffix='.h5')
-    model.save(temp_file_h5.name)
-    
-    # Reload the model from .h5 file to ensure compatibility
-    model = tf.keras.models.load_model(temp_file_h5.name)
-    
-    # Clean up: Delete temporary files
-    os.remove(temp_file_keras.name)
-    os.remove(temp_file_h5.name)
+    # Load the model using joblib (assuming it's serialized using joblib)
+    model = joblib.load(temp_file)
     
     return model
 
