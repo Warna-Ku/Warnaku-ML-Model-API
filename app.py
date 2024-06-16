@@ -7,7 +7,7 @@ from PIL import Image
 from sklearn.cluster import KMeans
 from skimage.color import rgb2lab, deltaE_cie76
 from datetime import datetime
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, g
 
 app = Flask(__name__)
 
@@ -35,12 +35,12 @@ def load_model_from_url(model_url):
     except tf.errors.OpError as e:
         raise RuntimeError(f"Error loading TensorFlow model: {e}")
 
-# Load the TensorFlow model
-try:
+# Load the TensorFlow model and store in Flask's application context
+@app.before_first_request
+def load_model():
+    global model
     model = load_model_from_url(MODEL_URL)
     print('Model loaded successfully.')
-except RuntimeError as e:
-    print(f"Failed to load model: {e}")
 
 # Function to preprocess image
 def preprocess_image(image):
