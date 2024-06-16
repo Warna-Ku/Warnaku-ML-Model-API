@@ -14,6 +14,9 @@ RUN pip install --upgrade pip
 # Install specified Python packages
 RUN pip install tensorflow==2.15.1 Flask==2.2.2 Pillow==8.4.0 scikit-image==0.19.0 scikit-learn==0.24.2 requests joblib==1.1.0 Werkzeug==2.3.7
 
+# Create a non-root user
+RUN groupadd -r app && useradd -r -g app app
+
 # Create application directory
 RUN mkdir -p /opt/app
 
@@ -22,6 +25,10 @@ WORKDIR /opt/app
 
 # Copy application code
 COPY . .
+
+# Change ownership to non-root user
+RUN chown -R app:app /opt/app
+USER app
 
 # Expose the port the app runs on
 EXPOSE 8080

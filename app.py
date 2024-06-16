@@ -7,38 +7,40 @@ from PIL import Image
 from sklearn.cluster import KMeans
 from skimage.color import rgb2lab, deltaE_cie76
 from datetime import datetime
-from collections import OrderedDict
 from flask import Flask, request, jsonify
-import joblib
-from urllib.parse import quote as url_quote  # Import url_quote from urllib.parse
 
 app = Flask(__name__)
 
 # Define your Google Cloud Storage model URL
-MODEL_URL = "https://storage.googleapis.com/warnaku-cs/UNet-ResNet34.keras"
+MODEL_URL = "https://storage.googleapis.com/warnaku-cs/UNet-ResNet34"
 
-# Function to load model from Google Cloud Storage
+# Download the model file and load it
 def load_model_from_url(model_url):
-    # Download the model file from the URL
-    with requests.get(model_url, stream=True) as r:
-        r.raise_for_status()
-        model_bytes = r.content
+    try:
+        # Download the model file from the URL
+        with requests.get(model_url, stream=True) as r:
+            r.raise_for_status()
+            model_bytes = r.content
+        
+        # Save model bytes to a temporary file
+        temp_file = io.BytesIO(model_bytes)
+        
+        # Load the model using TensorFlow's SavedModel format
+        model = tf.keras.models.load_model(temp_file)
+        
+        return model
     
-    # Save model bytes to a temporary file
-    temp_file = io.BytesIO(model_bytes)
-    
-    # Load the model using joblib (assuming it's serialized using joblib)
-    model = joblib.load(temp_file)
-    
-    return model
+    except requests.exceptions.RequestException as e:
+        raise RuntimeError(f"Error downloading model: {e}")
+    except tf.errors.OpError as e:
+        raise RuntimeError(f"Error loading TensorFlow model: {e}")
 
-# Load the model
-model = load_model_from_url(MODEL_URL)
-print('Model loaded successfully.')
-
-# Save the model to .h5 file
-model.save('model.h5')
-print('Model saved to model.h5')
+# Load the TensorFlow model
+try:
+    model = load_model_from_url(MODEL_URL)
+    print('Model loaded successfully.')
+except RuntimeError as e:
+    print(f"Failed to load model: {e}")
 
 # Function to preprocess image
 def preprocess_image(image):
@@ -133,36 +135,40 @@ def predict():
     image = Image.open(file.stream).convert('RGB')
     processed_image = preprocess_image(image)
 
-    pred_mask = model.predict(processed_image)[0]
-    pred_mask = np.argmax(pred_mask, axis=-1)
+    try:
+        pred_mask = model.predict(processed_image)[0]
+        pred_mask = np.argmax(pred_mask, axis=-1)
 
-    segments = {
-        'skin': 4,
-        'hair': 5,
-        'lips': 1,
-        'eyes': 2,
-    }
+        segments = {
+            'skin': 4,
+            'hair': 5,
+            'lips': 1,
+            'eyes': 2,
+        }
 
-    segmented_areas = {}
-    for segment, class_idx in segments.items():
-        mask = (pred_mask == class_idx)
-        segmented_area = processed_image[0][mask]
-        if segmented_area.size > 0:
-            segmented_areas[segment] = segmented_area
+        segmented_areas = {}
+        for segment, class_idx in segments.items():
+            mask = (pred_mask == class_idx)
+            segmented_area = processed_image[0][mask]
+            if segmented_area.size > 0:
+                segmented_areas[segment] = segmented_area
 
-    dominant_colors = {}
-    for segment, area in segmented_areas.items():
-        if area.size > 0:
-            dominant_colors[segment] = find_dominant_color(area)
+        dominant_colors = {}
+        for segment, area in segmented_areas.items():
+            if area.size > 0:
+                dominant_colors[segment] = find_dominant_color(area)
 
-    user_palette = determine_palette(dominant_colors)
+        user_palette = determine_palette(dominant_colors)
+        
+        response = {
+            'user_palette': user_palette,
+            'created': datetime.now().strftime('%m/%d/%Y, %H:%M:%S')
+        }
+
+        return jsonify(response)
     
-    response = {
-        'user_palette': user_palette,
-        'created': datetime.now().strftime('%m/%d/%Y, %H:%M:%S')
-    }
-
-    return jsonify(response)
+    except Exception as e:
+        return jsonify({'error': f'Prediction error: {str(e)}'}), 500
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)
