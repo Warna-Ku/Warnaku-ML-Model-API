@@ -8,6 +8,7 @@ from sklearn.cluster import KMeans
 from skimage.color import rgb2lab, deltaE_cie76
 from datetime import datetime
 from flask import Flask, request, jsonify
+from collections import OrderedDict
 
 app = Flask(__name__)
 
@@ -44,14 +45,29 @@ def load_model():
     model = load_model_from_url(MODEL_URL)
     print('Model loaded successfully.')
 
-# Function to preprocess image
+segmentation_labels = OrderedDict({
+    'background': [0, 0, 0],
+    'lips': [255, 0, 0],
+    'eyes': [0, 255, 0],
+    'nose': [0, 0, 255],
+    'skin': [128, 128, 128],
+    'hair': [255, 255, 0],
+    'eyebrows': [255, 0, 255],
+    'ears': [0, 255, 255],
+    'teeth': [255, 255, 255],
+    'beard': [255, 192, 192],
+    'sunglasses': [0, 128, 128],
+})
+
+labels = list(segmentation_labels.keys())
+rgb_values = list(segmentation_labels.values())
+
 def preprocess_image(image):
     image = image.resize((256, 256))
     image = np.array(image) / 255.0
     image = np.expand_dims(image, axis=0)
     return image
 
-# Function to extract dominant colors using KMeans clustering
 def extract_dominant_colors(image, k=3):
     pixels = image.reshape(-1, 3)
     kmeans = KMeans(n_clusters=k)
@@ -59,11 +75,9 @@ def extract_dominant_colors(image, k=3):
     colors = kmeans.cluster_centers_
     return colors
 
-# Function to calculate root mean square error (RMSE)
 def calculate_rmse(image1, image2):
     return np.sqrt(np.mean((image1 - image2) ** 2))
 
-# Function to find dominant color in segmented area
 def find_dominant_color(segmented_area):
     dominant_colors = extract_dominant_colors(segmented_area)
     best_color = None
@@ -78,17 +92,14 @@ def find_dominant_color(segmented_area):
 
     return best_color
 
-# Function to convert RGB to LAB color space
 def rgb_to_lab(color):
     color = np.array(color, dtype=np.uint8).reshape(1, 1, 3)
     color_lab = rgb2lab(color)
     return color_lab[0, 0]
 
-# Function to calculate color distance in LAB color space
 def color_distance(color1, color2):
     return deltaE_cie76(rgb_to_lab(color1), rgb_to_lab(color2))
 
-# Function to determine color palette based on dominant colors
 def determine_palette(dominant_colors):
     peach = [255, 229, 180]
     purple = [128, 0, 128]
@@ -127,7 +138,6 @@ def determine_palette(dominant_colors):
 
     return best_palette
 
-# Flask route to predict user palette
 @app.route('/predict', methods=['POST'])
 def predict():
     if 'image' not in request.files:
@@ -137,40 +147,35 @@ def predict():
     image = Image.open(file.stream).convert('RGB')
     processed_image = preprocess_image(image)
 
-    try:
-        pred_mask = model.predict(processed_image)[0]
-        pred_mask = np.argmax(pred_mask, axis=-1)
+    pred_mask = model.predict(processed_image)[0]
+    pred_mask = np.argmax(pred_mask, axis=-1)
 
-        segments = {
-            'skin': 4,
-            'hair': 5,
-            'lips': 1,
-            'eyes': 2,
-        }
+    segments = {
+        'skin': 4,
+        'hair': 5,
+        'lips': 1,
+        'eyes': 2,
+    }
 
-        segmented_areas = {}
-        for segment, class_idx in segments.items():
-            mask = (pred_mask == class_idx)
-            segmented_area = processed_image[0][mask]
-            if segmented_area.size > 0:
-                segmented_areas[segment] = segmented_area
+    segmented_areas = {}
+    for segment, class_idx in segments.items():
+        mask = (pred_mask == class_idx)
+        segmented_area = processed_image[0][mask]
+        if segmented_area.size > 0:
+            segmented_areas[segment] = segmented_area
 
-        dominant_colors = {}
-        for segment, area in segmented_areas.items():
-            if area.size > 0:
-                dominant_colors[segment] = find_dominant_color(area)
+    dominant_colors = {}
+    for segment, area in segmented_areas.items():
+        if area.size > 0:
+            dominant_colors[segment] = find_dominant_color(area)
 
-        user_palette = determine_palette(dominant_colors)
-        
-        response = {
-            'user_palette': user_palette,
-            'created': datetime.now().strftime('%m/%d/%Y, %H:%M:%S')
-        }
+    user_palette = determine_palette(dominant_colors)
+    response = {
+        'user_palette': user_palette,
+        'created': datetime.now().strftime('%m/%d/%Y, %H:%M:%S')
+    }
 
-        return jsonify(response)
-    
-    except Exception as e:
-        return jsonify({'error': f'Prediction error: {str(e)}'}), 500
+    return jsonify(response)
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080)
+    app.run(port=5000, debug=True)

@@ -1,5 +1,5 @@
 # Use Python 3.9 base image
-FROM python:3.9
+FROM python:3.10
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install -y \
 RUN pip install --upgrade pip
 
 # Install specified Python packages
-RUN pip install tensorflow==2.15.1 Keras Flask==2.2.2 Pillow==8.4.0 scikit-image==0.19.0 scikit-learn==0.24.2 requests joblib==1.1.0 Werkzeug==2.3.7
+RUN pip install tensorflow==2.16.1 Keras Flask==2.2.2 Pillow==8.4.0 scikit-image==0.19.0 scikit-learn==0.24.2 requests joblib==1.1.0 Werkzeug==2.3.7
 
 # Create a non-root user
 RUN groupadd -r app && useradd -r -g app app
