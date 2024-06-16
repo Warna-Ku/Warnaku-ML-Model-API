@@ -1,6 +1,6 @@
 import os
-import io  # Add this line to import the 'io' module
-from flask import Flask, request, jsonify
+import io
+import requests
 import tensorflow as tf
 import numpy as np
 from PIL import Image
@@ -8,7 +8,8 @@ from sklearn.cluster import KMeans
 from skimage.color import rgb2lab, deltaE_cie76
 from datetime import datetime
 from collections import OrderedDict
-import requests
+from flask import Flask, request, jsonify
+import tempfile
 
 app = Flask(__name__)
 
@@ -22,8 +23,24 @@ def load_model_from_url(model_url):
         r.raise_for_status()
         model_bytes = r.content
     
-    # Load the model
-    model = tf.keras.models.load_model(io.BytesIO(model_bytes))
+    # Save model bytes to a temporary file with .keras extension
+    temp_file_keras = tempfile.NamedTemporaryFile(delete=False, suffix='.keras')
+    temp_file_keras.write(model_bytes)
+    temp_file_keras.close()
+    
+    # Load the .keras model
+    model = tf.keras.models.load_model(temp_file_keras.name)
+    
+    # Convert the model to .h5 format and save to a temporary file
+    temp_file_h5 = tempfile.NamedTemporaryFile(delete=False, suffix='.h5')
+    model.save(temp_file_h5.name)
+    
+    # Reload the model from .h5 file to ensure compatibility
+    model = tf.keras.models.load_model(temp_file_h5.name)
+    
+    # Clean up: Delete temporary files
+    os.remove(temp_file_keras.name)
+    os.remove(temp_file_h5.name)
     
     return model
 
@@ -45,10 +62,6 @@ segmentation_labels = OrderedDict({
     'beard': [255, 192, 192],
     'sunglasses': [0, 128, 128],
 })
-
-# List of labels and RGB values
-labels = list(segmentation_labels.keys())
-rgb_values = list(segmentation_labels.values())
 
 # Function to preprocess image
 def preprocess_image(image):
