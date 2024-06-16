@@ -10,6 +10,7 @@ from datetime import datetime
 from collections import OrderedDict
 from flask import Flask, request, jsonify
 import joblib
+from urllib.parse import quote as url_quote  # Import url_quote from urllib.parse
 
 app = Flask(__name__)
 
