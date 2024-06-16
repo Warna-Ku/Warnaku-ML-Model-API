@@ -7,7 +7,7 @@ from PIL import Image
 from sklearn.cluster import KMeans
 from skimage.color import rgb2lab, deltaE_cie76
 from datetime import datetime
-from flask import Flask, request, jsonify, g
+from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
@@ -23,10 +23,12 @@ def load_model_from_url(model_url):
             model_bytes = r.content
         
         # Save model bytes to a temporary file
-        temp_file = io.BytesIO(model_bytes)
+        temp_file_path = "/tmp/model.keras"  # Choose a temporary file path with .keras extension
+        with open(temp_file_path, "wb") as f:
+            f.write(model_bytes)
         
-        # Load the model using TensorFlow's SavedModel format
-        model = tf.keras.models.load_model(temp_file)
+        # Load the model using TensorFlow's load_model function
+        model = tf.keras.models.load_model(temp_file_path)
         
         return model
     
