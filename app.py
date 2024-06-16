@@ -170,10 +170,63 @@ def predict():
             dominant_colors[segment] = find_dominant_color(area)
 
     user_palette = determine_palette(dominant_colors)
+    
     response = {
         'user_palette': user_palette,
         'created': datetime.now().strftime('%m/%d/%Y, %H:%M:%S')
     }
+
+    # Add detailed palette descriptions and images based on the user's palette
+    if user_palette == "autumn":
+        response.update({
+            'PalDesc': "Palet musim gugur menghadirkan kehangatan dan kedalaman dengan warna-warna seperti coklat tua, oranye hangat, dan hijau zaitun. Warna-warna ini sempurna untuk pernikahan yang memancarkan keintiman dan kenyamanan dalam suasana alami dan hangat.",
+            'Colors': [
+                {"Desc": "Kombu Green yang tenang ini cocok untuk gaun pengantin yang elegan di tengah suasana alami yang hangat.", "Img": "Autumn_Cloth1_KombuGreen.jpg", "Code": "#354230", "Name": "Kombu Green"},
+                {"Desc": "Old Moss Green menciptakan nuansa alami dan hangat, ideal untuk setelan pengantin pria yang kuat dan intim.", "Img": "Autumn_Cloth2_OldMossGreen.jpg", "Code": "#867E36", "Name": "Old Moss Green"},
+                {"Desc": "Outer Space memberikan sentuhan modern pada dekorasi pernikahan, menambah kesan tegas dan maskulin.", "Img": "Autumn_Cloth3_OuterSpace.jpg", "Code": "#414A4C", "Name": "Outer Space"},
+                {"Desc": "Brownish Black menambahkan elemen misterius dan dramatis, cocok untuk gaun pesta yang mempesona.", "Img": "Autumn_Cloth4_BrownishBlack.jpg", "Code": "#665D1E", "Name": "Brownish Black"},
+                {"Desc": "Metallic Bronze mengekspresikan semangat dan kegembiraan, sempurna untuk aksen dekorasi yang riang.", "Img": "Autumn_Cloth5_MetallicBronze.jpg", "Code": "#B08554", "Name": "Metallic Bronze"}
+            ],
+            'PalImg': "AutumnPal.png"
+        })
+    elif user_palette == "spring":
+        response.update({
+            'PalDesc': "Palet musim semi membawa palet cerah dan segar, dengan warna biru cerah, hijau muda, dan merah muda. Ini mencerminkan kebangkitan dan harapan baru, cocok untuk pernikahan yang penuh keceriaan di taman berbunga.",
+            'Colors': [
+                {"Desc": "Blue Purple melambangkan kedamaian dan kebangkitan, cocok untuk gaun pengantin yang segar di musim semi.", "Img": "Spring_Cloth1_BluePurple.jpg", "Code": "#745AA9", "Name": "Blue Purple"},
+                {"Desc": "Cyan Blue memberikan sentuhan ringan dan ceria, ideal untuk dasi atau aksesori pengantin pria.", "Img": "Spring_Cloth2_CyanBlue.jpg", "Code": "#00B7EB", "Name": "Cyan Blue"},
+                {"Desc": "Green mengingatkan pada dedaunan segar, cocok untuk dekorasi bunga yang melambangkan kehidupan baru.", "Img": "Spring_Cloth3_Green.jpg", "Code": "#00FF00", "Name": "Green"},
+                {"Desc": "Crayola Orange Red membawa energi dan keceriaan, pas untuk gaun pesta yang mempesona.", "Img": "Spring_Cloth4_CrayolaOrangeRed.jpg", "Code": "#FF4433", "Name": "Crayola Orange Red"},
+                {"Desc": "Princeton Orange mencerminkan keceriaan dan semangat, cocok untuk aksen dekoratif yang menciptakan suasana riang.", "Img": "Spring_Cloth5_PrincetonOrange.jpg", "Code": "#FF7036", "Name": "Princeton Orange"}
+            ],
+            'PalImg': "SpringPal.png"
+        })
+    elif user_palette == "summer":
+        response.update({
+            'PalDesc': "Palet musim panas menampilkan warna-warna yang cerah dan ceria seperti biru laut, ungu muda, dan merah jambu. Ideal untuk pernikahan pantai atau luar ruangan yang menyenangkan dan riang, mencerminkan kebebasan dan keceriaan musim panas.",
+            'Colors': [
+                {"Desc": "Crystal Light Blue menghadirkan ketenangan dan kebebasan, sempurna untuk gaun pengantin yang ringan dan mengalir.", "Img": "Summer_Cloth1_CrystalLightBlue.jpg", "Code": "#ACE6FB", "Name": "Crystal Light Blue"},
+                {"Desc": "Cool Grey menambahkan sentuhan elegan dan romantis, ideal untuk gaun pengiring pengantin yang manis.", "Img": "Summer_Cloth2_CoolGrey.jpg", "Code": "#8C92AC", "Name": "Cool Grey"},
+                {"Desc": "Jungle Green memberikan kesan segar dan eksotis, cocok untuk aksen dekorasi pantai atau tropis.", "Img": "Summer_Cloth3_JungleGreen.jpg", "Code": "#29AB87", "Name": "Jungle Green"},
+                {"Desc": "Brick Red memancarkan semangat dan gairah, pas untuk gaun pesta yang memukau dan berani.", "Img": "Summer_Cloth4_BrickRed.jpg", "Code": "#CB4154", "Name": "Brick Red"},
+                {"Desc": "Metallic Pink menambahkan kelembutan dan keanggunan, sempurna untuk detail dekorasi bunga atau aksesoris pengantin.", "Img": "Summer_Cloth5_MetallicPink.jpg", "Code": "#FF8AAB", "Name": "Metallic Pink"}
+            ],
+            'PalImg': "SummerPal.png"
+        })
+    elif user_palette == "winter":
+        response.update({
+            'PalDesc': "Musim dingin membawa palet yang tajam dan dramatis dengan warna hitam, putih, dan merah tua. Cocok untuk pernikahan dalam ruangan yang elegan dan mewah, menciptakan suasana berkelas dan memikat yang penuh dengan kemewahan.",
+            'Colors': [
+                {"Desc": "Lemon Yellow membawa kecerahan dan kegembiraan, cocok untuk aksen dekorasi yang menyegarkan suasana pernikahan musim dingin.", "Img": "Winter_Cloth1_LemonYellow.jpg", "Code": "#FFF700", "Name": "Lemon Yellow"},
+                {"Desc": "Black Chocolate menambahkan sentuhan elegan dan dramatis, sempurna untuk setelan pengantin pria yang klasik dan berkelas.", "Img": "Winter_Cloth2_BlackChocolate.jpg", "Code": "#1B1811", "Name": "Black Chocolate"},
+                {"Desc": "Floral White menciptakan suasana kemurnian dan kesucian, cocok untuk gaun pengantin yang abadi dan indah.", "Img": "Winter_Cloth3_FloralWhite.jpg", "Code": "#FFFAF0", "Name": "Floral White"},
+                {"Desc": "Dark Crimson menambahkan nuansa hangat dan romantis, pas untuk gaun pengiring pengantin yang memukau.", "Img": "Winter_Cloth4_DarkCrimson.jpg", "Code": "#8C0000", "Name": "Dark Crimson"},
+                {"Desc": "Metallic Green menciptakan suasana alami dan tenang, sempurna untuk dekorasi bunga atau aksesoris yang elegan.", "Img": "Winter_Cloth5_MetallicGreen.jpg", "Code": "#0A694F", "Name": "Metallic Green"}
+            ],
+            'PalImg': "WinterPal.png"
+        })
+    else:
+        response.update({'PalDesc': "Invalid palette"})
 
     return jsonify(response)
 
