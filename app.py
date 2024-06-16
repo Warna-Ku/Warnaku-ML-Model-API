@@ -12,7 +12,7 @@ from flask import Flask, request, jsonify, g
 app = Flask(__name__)
 
 # Define your Google Cloud Storage model URL
-MODEL_URL = "https://storage.googleapis.com/warnaku-cs/UNet-ResNet34"
+MODEL_URL = "https://storage.googleapis.com/warnaku-cs/UNet-ResNet34.keras"
 
 # Download the model file and load it
 def load_model_from_url(model_url):
