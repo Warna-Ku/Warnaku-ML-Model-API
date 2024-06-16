@@ -1,5 +1,5 @@
 # Use Python 3.9 base image
-FROM python:3.10
+FROM python:3.9
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
