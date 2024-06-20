@@ -192,36 +192,36 @@ def predict():
         },
         "spring": {
             'PalImg': f"{bucket_url}/assets/SpringPal.png",
-            'PalDesc': "Palet musim semi membawa kebahagiaan dan keceriaan dengan warna-warna cerah seperti hijau muda, kuning cerah, dan merah muda pastel. Palet ini cocok untuk pernikahan yang menyenangkan dan penuh semangat di tengah suasana ceria dan hidup.",
+            'PalDesc': "Palet musim semi membawa palet cerah dan segar, dengan warna biru cerah, hijau muda, dan merah muda. Ini mencerminkan kebangkitan dan harapan baru, cocok untuk pernikahan yang penuh keceriaan di taman berbunga.",
             'Colors': [
-                {"Desc": "Bright Green ini memberikan nuansa segar dan cerah, sempurna untuk dekorasi bunga di pernikahan musim semi.", "attire": f"{bucket_url}/attire/Spring_Cloth1_BrightGreen.jpg", "Code": "#66FF66", "Name": "Bright Green"},
-                {"Desc": "Vivid Yellow menambah sentuhan ceria pada gaun pengantin wanita, membawa keceriaan dan kebahagiaan.", "attire": f"{bucket_url}/attire/Spring_Cloth2_VividYellow.jpg", "Code": "#FFFF66", "Name": "Vivid Yellow"},
-                {"Desc": "Light Pink menciptakan suasana lembut dan romantis, ideal untuk aksen dekorasi yang mempesona.", "attire": f"{bucket_url}/attire/Spring_Cloth3_LightPink.jpg", "Code": "#FFB6C1", "Name": "Light Pink"},
-                {"Desc": "Baby Blue memberikan nuansa tenang dan damai, cocok untuk gaun pengiring pengantin yang menenangkan.", "attire": f"{bucket_url}/attire/Spring_Cloth4_BabyBlue.jpg", "Code": "#89CFF0", "Name": "Baby Blue"},
-                {"Desc": "Lavender memberikan sentuhan elegan dan anggun pada pesta pernikahan, menambah kesan mewah.", "attire": f"{bucket_url}/attire/Spring_Cloth5_Lavender.jpg", "Code": "#E6E6FA", "Name": "Lavender"}
-            ]
+                {"Desc": "Blue Purple melambangkan kedamaian dan kebangkitan, cocok untuk gaun pengantin yang segar di musim semi.", "attire": f"{bucket_url}/attire/Spring_Cloth1_BluePurple.jpg", "Code": "#745AA9", "Name": "Blue Purple"},
+                {"Desc": "Cyan Blue memberikan sentuhan ringan dan ceria, ideal untuk dasi atau aksesori pengantin pria.", "attire": f"{bucket_url}/attire/Spring_Cloth2_CyanBlue.jpg", "Code": "#00B7EB", "Name": "Cyan Blue"},
+                {"Desc": "Green mengingatkan pada dedaunan segar, cocok untuk dekorasi bunga yang melambangkan kehidupan baru.", "attire": f"{bucket_url}/attire/Spring_Cloth3_Green.jpg", "Code": "#00FF00", "Name": "Green"},
+                {"Desc": "Crayola Orange Red membawa energi dan keceriaan, pas untuk gaun pesta yang mempesona.", "attire": f"{bucket_url}/attire/Spring_Cloth4_CrayolaOrangeRed.jpg", "Code": "#FF4433", "Name": "Crayola Orange Red"},
+                {"Desc": "Princeton Orange mencerminkan keceriaan dan semangat, cocok untuk aksen dekoratif yang menciptakan suasana riang.", "attire": f"{bucket_url}/attire/Spring_Cloth5_PrincetonOrange.jpg", "Code": "#FF7036", "Name": "Princeton Orange"}
+            ] 
         },
         "summer": {
             'PalImg': f"{bucket_url}/assets/SummerPal.png",
-            'PalDesc': "Palet musim panas menghadirkan keceriaan dan kesegaran dengan warna-warna terang seperti biru laut, hijau mint, dan putih cerah. Palet ini cocok untuk pernikahan yang penuh semangat dan energi di tengah suasana yang terang dan hangat.",
+            'PalDesc': "Palet musim panas menampilkan warna-warna yang cerah dan ceria seperti biru laut, ungu muda, dan merah jambu. Ideal untuk pernikahan pantai atau luar ruangan yang menyenangkan dan riang, mencerminkan kebebasan dan keceriaan musim panas.",
             'Colors': [
-                {"Desc": "Turquoise ini memberikan kesan segar dan dinamis, ideal untuk dekorasi pantai di pernikahan musim panas.", "attire": f"{bucket_url}/attire/Summer_Cloth1_Turquoise.jpg", "Code": "#30D5C8", "Name": "Turquoise"},
-                {"Desc": "Coral Pink menambah sentuhan ceria dan feminin, cocok untuk gaun pengiring pengantin yang menyenangkan.", "attire": f"{bucket_url}/attire/Summer_Cloth2_CoralPink.jpg", "Code": "#F88379", "Name": "Coral Pink"},
-                {"Desc": "Sunny Yellow menciptakan suasana hangat dan penuh semangat, ideal untuk aksen dekorasi yang ceria.", "attire": f"{bucket_url}/attire/Summer_Cloth3_SunnyYellow.jpg", "Code": "#FFD700", "Name": "Sunny Yellow"},
-                {"Desc": "Ocean Blue memberikan nuansa tenang dan menenangkan, sempurna untuk dekorasi meja di pesta pernikahan.", "attire": f"{bucket_url}/attire/Summer_Cloth4_OceanBlue.jpg", "Code": "#0077BE", "Name": "Ocean Blue"},
-                {"Desc": "Mint Green menambahkan kesan segar dan alami, cocok untuk buket bunga yang mempesona.", "attire": f"{bucket_url}/attire/Summer_Cloth5_MintGreen.jpg", "Code": "#98FF98", "Name": "Mint Green"}
+                {"Desc": "Crystal Light Blue menghadirkan ketenangan dan kebebasan, sempurna untuk gaun pengantin yang ringan dan mengalir.", "attire": f"{bucket_url}/attire/Summer_Cloth1_CrystalLightBlue.jpg", "Code": "#ACE6FB", "Name": "Crystal Light Blue"},
+                {"Desc": "Cool Grey menambahkan sentuhan elegan dan romantis, ideal untuk gaun pengiring pengantin yang manis.", "attire": f"{bucket_url}/attire/Summer_Cloth2_CoolGrey.jpg", "Code": "#8C92AC", "Name": "Cool Grey"},
+                {"Desc": "Jungle Green memberikan kesan segar dan eksotis, cocok untuk aksen dekorasi pantai atau tropis.", "attire": f"{bucket_url}/attire/Summer_Cloth3_JungleGreen.jpg", "Code": "#29AB87", "Name": "Jungle Green"},
+                {"Desc": "Brick Red memancarkan semangat dan gairah, pas untuk gaun pesta yang memukau dan berani.", "attire": f"{bucket_url}/attire/Summer_Cloth4_BrickRed.jpg", "Code": "#CB4154", "Name": "Brick Red"},
+                {"Desc": "Metallic Pink menambahkan kelembutan dan keanggunan, sempurna untuk detail dekorasi bunga atau aksesoris pengantin.", "attire": f"{bucket_url}/attire/Summer_Cloth5_MetallicPink.jpg", "Code": "#FF8AAB", "Name": "Metallic Pink"}
             ]
         },
         "winter": {
             'PalImg': f"{bucket_url}/assets/WinterPal.png",
-            'PalDesc': "Palet musim dingin menghadirkan keanggunan dan kemewahan dengan warna-warna seperti biru tua, putih salju, dan merah marun. Palet ini cocok untuk pernikahan yang memancarkan keindahan dan kemegahan dalam suasana yang elegan dan dingin.",
+            'PalDesc': "Musim dingin membawa palet yang tajam dan dramatis dengan warna hitam, putih, dan merah tua. Cocok untuk pernikahan dalam ruangan yang elegan dan mewah, menciptakan suasana berkelas dan memikat yang penuh dengan kemewahan.",
             'Colors': [
-                {"Desc": "Royal Blue memberikan kesan anggun dan mewah, ideal untuk gaun pengantin yang megah.", "attire": f"{bucket_url}/attire/Winter_Cloth1_RoyalBlue.jpg", "Code": "#4169E1", "Name": "Royal Blue"},
-                {"Desc": "Burgundy menambah sentuhan hangat dan mewah, cocok untuk dekorasi meja yang elegan.", "attire": f"{bucket_url}/attire/Winter_Cloth2_Burgundy.jpg", "Code": "#800020", "Name": "Burgundy"},
-                {"Desc": "Snow White menciptakan suasana dingin dan anggun, sempurna untuk aksen dekorasi yang mempesona.", "attire": f"{bucket_url}/attire/Winter_Cloth3_SnowWhite.jpg", "Code": "#FFFAFA", "Name": "Snow White"},
-                {"Desc": "Slate Gray memberikan nuansa modern dan kuat, cocok untuk setelan pengantin pria yang tegas.", "attire": f"{bucket_url}/attire/Winter_Cloth4_SlateGray.jpg", "Code": "#708090", "Name": "Slate Gray"},
-                {"Desc": "Crimson Red menambahkan elemen dramatis dan romantis, ideal untuk gaun pesta yang memukau.", "attire": f"{bucket_url}/attire/Winter_Cloth5_CrimsonRed.jpg", "Code": "#DC143C", "Name": "Crimson Red"}
-            ]
+                {"Desc": "Lemon Yellow membawa kecerahan dan kegembiraan, cocok untuk aksen dekorasi yang menyegarkan suasana pernikahan musim dingin.", "attire": f"{bucket_url}/attire/Winter_Cloth1_LemonYellow.jpg", "Code": "#FFF700", "Name": "Lemon Yellow"},
+                {"Desc": "Black Chocolate menambahkan sentuhan elegan dan dramatis, sempurna untuk setelan pengantin pria yang klasik dan berkelas.", "attire": f"{bucket_url}/attire/Winter_Cloth2_BlackChocolate.jpg", "Code": "#1B1811", "Name": "Black Chocolate"},
+                {"Desc": "Floral White menciptakan suasana kemurnian dan kesucian, cocok untuk gaun pengantin yang abadi dan indah.", "attire": f"{bucket_url}/attire/Winter_Cloth3_FloralWhite.jpg", "Code": "#FFFAF0", "Name": "Floral White"},
+                {"Desc": "Dark Crimson menambahkan nuansa hangat dan romantis, pas untuk gaun pengiring pengantin yang memukau.", "attire": f"{bucket_url}/attire/Winter_Cloth4_DarkCrimson.jpg", "Code": "#8C0000", "Name": "Dark Crimson"},
+                {"Desc": "Metallic Green menciptakan suasana alami dan tenang, sempurna untuk dekorasi bunga atau aksesoris yang elegan.", "attire": f"{bucket_url}/attire/Winter_Cloth5_MetallicGreen.jpg", "Code": "#0A694F", "Name": "Metallic Green"}
+            ] 
         }
     }
 
